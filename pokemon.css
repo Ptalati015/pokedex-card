@@ -1,0 +1,184 @@
+#center {
+    height: 200px;
+    display: flex;
+    margin-left:0px;
+    margin-top: 190px;
+    align-items: center;
+    justify-content: center; 
+}
+
+#outline {
+    background-color: red;
+    width: 300px;
+    height: 370px;
+    border: 15px solid black;
+    padding: 74px;
+    margin: 20px;
+    align-self: center;
+    position:center;
+}
+
+body {
+    background-image: url("pokemo.jpg");
+}
+
+
+#card {
+    
+    background-color:white;
+    border: 5px solid black;
+    border-radius: 9px;
+    margin-top:100px;
+    display:none;
+}
+
+
+#style {
+    color: white;
+    color: black;
+    border: 2px solid yellow;
+    border-radius: 9px;
+
+}
+
+#style > h1 {
+    color: black;
+}
+
+#style > p:hover {
+    color: white;
+}
+
+#scan {
+    margin-top: 100px;
+    background-color:black;
+    color: white;
+    float: left;
+    border-color: white;
+    border-radius: 9px;
+}
+
+#stats {
+    margin-top:100px;
+    float: right;
+    background-color:black;
+    color: white;
+    border-color: white;
+}
+
+
+
+#title {
+    float:center;
+    text-align:center;
+    color: yellow;
+    text-decoration: underline;
+    display: none;
+}
+
+#title:hover {
+    color:aqua;
+}
+
+#re {
+    margin-top:200px;
+    float: left;
+    background-color:black;
+    color: white;
+    border-color: white;
+
+}
+
+#play {
+   
+    float: center;
+    background-color:black;
+    color: white;
+    border-color: white;
+    margin-left: 139px;
+}
+
+img {
+    float:center;
+}
+
+#img {
+    position: center;
+   
+}
+#pop-up-screen {
+    display: none;
+    background-color:white;
+    border: 5px solid black
+
+}
+
+
+#pop-up-screen > h2 {
+    text-align: center;
+}
+
+#pop-up-screen > p {
+    text-align: center;
+}
+
+#bold {
+    font-weight: bold;
+    text-align: center;
+    text-decoration: underline;
+    border: 2px solid yellow;
+    border-radius: 9px;
+}
+
+
+.stat {
+    display: grid;
+    grid-template-columns: 120px 120px 120px;
+    align-items: start;
+    justify-content: space-between;
+    background-color: white;
+    width:190px;
+}
+
+
+#label {
+    background-color: white;
+    float:center;
+   
+}
+
+#best-move {
+    background-color: white;
+    width:190px;
+    font-weight: bold;
+}
+
+#info {
+    display: none;
+}
+
+#pop-up-screen-2 {
+    display: none;
+}
+
+#flip {
+    margin-left:330px;;
+}
+
+#list {  
+   width:100px;
+   background-color: black; 
+}
+
+li {
+    color:aquamarine;  
+}
+
+h4 {
+    background-color: white;
+    width:190px;
+}
+
+h1 {
+    text-align: center;
+}

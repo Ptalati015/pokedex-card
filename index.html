@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pokemon.css">
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <title>pokedex</title>
+</head>
+<body>
+    
+    
+    <div id ="center">
+        
+       
+        <main id="outline">
+            <section id = "home-page">
+                <div id = "style">
+                <h1>Welcome to Pokédex</h1>
+                <p>This application allows you to browse through the various pokemon available</p>
+                <p>When ready click play</p>
+                <p>When you find a pokemon you are interested in just choose its option and click Scan</p>
+                <p>After you click scan the Pokemon name type and image will pop up</p>
+                <p>If you want more stats then click stats</p>
+                <p>Note you can toggle through card-sides with the "re-search an flip buttons"</p>
+                </div>
+                <input  type="button" value = "play" id = "play"> 
+            </section>
+            <h1 id = "title">Pokédex</h1>
+
+            <section id = pop-up-screen>
+                <h2 id = "pok-name"></h2>
+                <p id = "types"></p>
+                <img id = "blank"> 
+                <img id = "center1">
+                <input  type="button" value = "Re-Search" id = "re">  
+                <input  type="button" value = "Stats" id = "stats"> 
+                
+            </section>
+
+            <div id ="pop-up-screen-2">
+                <h2 id = bold> STATS</h2>
+                <h4>Top Ablities:</h4>
+                <ol id = "list">
+
+                </ol>
+                <h4 class = "stat stat1"> </h4>
+                <h4 class = "stat stat2"> </h4>
+                <h4 class = "stat stat3"> </h4>
+                <h4 class = "stat stat4"> </h4>
+                <h4 class = "stat stat5"> </h4>
+                <p id = "best-move"></p>
+                <input  type="button" value = "flip" id = "flip"> 
+               
+            </div>
+
+           
+            
+           
+           <section id = "card">
+            
+            <form>
+                <label id = "label">CHOOSE YOUR POKEMON</label><br>
+                <select id="choose">
+                  <option >pokemon</option>
+                 
+              </form>
+              
+
+           </section>
+          
+
+        <section id = "items"> 
+            
+            <input  type="button" value = "Scan" id = "scan">   
+            <img id = "img" src = "pokemon.webp" width="200" height="100">
+        </section>
+       
+    </div>
+
+    <script>
+        let url = "poke.json";
+        let object;
+        fetch(url).then ( (response) => {
+          return response.json();
+          }).then ( (json) => {
+              object =  json;
+              console.log(object);
+              for(var i=0; i<object.length; i++) {
+                let v = document.querySelector("#choose");
+                let opt = document.createElement("option");
+                opt.innerText = (object[i]["name"]["english"]);
+                v.appendChild(opt);
+              }
+         })
+         
+     </script>
+
+        
+    </main>
+
+    <script>
+         
+        
+         let db = new Dexie("PokeDex");
+            db.version(1).stores({
+                Poke: `
+                    index,
+                    name,
+                    image,
+                    skill`,
+                });
+
+    
+        let url1 = "poke.json";
+        document.querySelector("#scan").
+    addEventListener('click', (e) => {
+        let val = document.querySelector("#choose").value;
+        fetch(url1).then ((response) => {
+        return response.json();
+        }).then(json => {
+            let object = json;
+            var i =0;
+                   
+       
+            while(i < object.length) {
+                if(object[i]["name"]["english"] == val) {
+                    let pName = document.querySelector("#pok-name");
+                    let types = document.querySelector("#types");
+                    pName.innerText = object[i]["name"]["english"];
+                    types.innerText = object[i]["type"];
+                    document.querySelector(".stat1").innerText = "Hp: " + object[i]["base"]["HP"];
+                    document.querySelector(".stat2").innerText = "Attack: " + object[i]["base"]["Attack"];
+                    document.querySelector(".stat3").innerText = "Defense: " + object[i]["base"]["Defense"];
+                    document.querySelector(".stat4").innerText = "Sp. Attack: "  + object[i]["base"]["Sp. Attack"];
+                    document.querySelector(".stat5").innerText = "Sp. Defense: "  + object[i]["base"]["Sp. Defense"];
+                   let list = document.querySelector("#list");
+
+
+                   let index = object[i]["id"];
+
+                   let nameDB = object[i]["name"]["english"];
+                     
+                    
+                            fetch('https://pokeapi.co/api/v2/pokemon?limit=10000')
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                    let pokemon = json["results"];
+                    console.log(pokemon);
+                    for(var i=0; i<pokemon.length; i++) {
+                        let pok = pokemon[i]["name"]; 
+                        pok = pok.toUpperCase();
+                        val = val.toUpperCase();
+                        if(pok == val ) {
+                        let url = pokemon[i]["url"];
+                        fetch(url).then(response => response.json())
+                        .then (poki => {
+                            console.log(poki);
+                            let arr = poki["moves"];
+                            console.log(arr);
+                            let match = document.querySelectorAll("li");
+                           
+                            if(match.length >= 3) {
+                                while (list.firstChild) {
+                                    list.removeChild(list.lastChild);
+                                }
+                            }
+                            for(var j=0; j<3; j++) {
+                                let l = arr[j]["move"]["name"];
+                                
+                                let opt = document.createElement("li");
+                                opt.innerText =l;
+                                list.appendChild(opt);
+                            }
+                           
+                            // let pokeImage = document.createElement('img');
+                            let image = poki["sprites"]["front_default"];
+                            // pokeImage.src = image;
+                            document.querySelector("#blank").src = poki["sprites"]["front_shiny"];
+                            document.querySelector("#center1").src = image;
+                            let sentence =  poki["abilities"][0]["ability"]["name"];
+                            sentence = sentence.toUpperCase();
+                             document.querySelector("#best-move").innerText = "Skill: "+  sentence;
+                             let group = {index: index , name: nameDB, image: image, skill: poki["abilities"][0]["ability"]["name"]};
+                             db.Poke.bulkPut([group]);
+                            
+                        })
+                    i = pokemon.length;
+                    }
+                    }
+                })
+            
+                    let synth = window.speechSynthesis;
+                    let speech = "Chooooose your pokemon"
+                    let utterance = new SpeechSynthesisUtterance(speech);
+                  utterance.voice = synth.getVoices()[9];
+                  speechSynthesis.speak(utterance);
+                  speech = "I chooose " + val;
+                  utterance = new SpeechSynthesisUtterance(speech);
+                  speechSynthesis.speak(utterance);
+                    document.querySelector("#pop-up-screen").style.display = "block";
+                    i = object.length+10;
+                    document.querySelector("#card").style.display = "none";
+                    document.querySelector("#title").style.display = "none";
+                   
+
+
+
+                } else { ++i;}
+               
+            }
+        })
+    })
+    </script>
+
+    <script>
+        document.querySelector("#re").
+    addEventListener('click', (e) => {
+        document.querySelector("#pop-up-screen").style.display ="none";
+        document.querySelector("#card").style.display = "block";
+        document.querySelector("#title").style.display = "block";
+    })
+
+    document.querySelector("#stats").
+    addEventListener('click', (e) => {
+        document.querySelector("#pop-up-screen").style.display ="none";
+        document.querySelector("#pop-up-screen-2").style.display = "block";
+        document.querySelector("#title").style.display = "none";
+
+    })
+
+    document.querySelector("#flip").
+    addEventListener('click', (e) => {
+
+        document.querySelector("#pop-up-screen-2").style.display = "none"
+        document.querySelector("#pop-up-screen").style.display ="block";
+        document.querySelector("#title").style.display = "none";
+    })
+
+    document.querySelector("#play").
+    addEventListener('click', (e) => {
+        let body =  document.querySelector("body");
+        
+        document.querySelector("#card").style.display = "block";
+        document.querySelector("#title").style.display = "block";
+        document.querySelector("#home-page").style.display = "none";
+        body.style.cssText = "background-image: url(pokeball.gif)";
+        
+
+    })
+
+
+
+    </script>
+
+   
+    
+</body>
+</html>
